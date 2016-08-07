@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Subway Fare Calculator</string>
+    
+    <string name="existing_fare">Amount on MetroCard</string>
+    <string name="num_of_trips">Total trips desired</string>
+    <string name="total_to_add">Amount needed to add</string>
 </resources>

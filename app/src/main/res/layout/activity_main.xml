@@ -9,8 +9,33 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.pcgeekbrain.subwayfarecalculator.MainActivity">
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/existing_funds"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/existing_fare" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/num_of_trips"
+        android:layout_below="@+id/existing_funds"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/num_of_trips" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/total_to_add"
+        android:layout_below="@+id/num_of_trips"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/total_to_add" />
 </RelativeLayout>
