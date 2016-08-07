@@ -7,6 +7,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.EditText;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText existingFunds, numOfTrips, totalToAdd;
@@ -14,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     //calculation variables
     private double fare = 2.75;
     private double rate = 1.11;
-    private double Min = 5.50;
+    private double min = 5.50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +37,26 @@ public class MainActivity extends AppCompatActivity {
         double trips = getDoubleFromEditText(numOfTrips);
         double total = getDoubleFromEditText(totalToAdd);
 
-        if (id == R.id.existing_funds){
-            //run calculation on existing amount
-            total = trips * fare - existing;
-            setWatchedEditText(totalToAdd, totalToAddWatcher, String.valueOf(total));
-        }
-        else if (id == R.id.num_of_trips){
-            total = trips * fare - existing;
-            setWatchedEditText(totalToAdd, totalToAddWatcher, String.valueOf(total));
-
-        }
-        else if (id == R.id.total_to_add){
-            trips = total / fare;
-            setWatchedEditText(numOfTrips, numOfTripsWatcher, String.valueOf(trips));
+        switch (id){
+            case R.id.existing_funds:
+            case R.id.num_of_trips:
+                //total to add is num of trips multiplied by the fare. then for good measure remove existing funds
+                total = (trips * fare) - existing;
+                if (total > min * rate){    //if we qualify for the discount (are adding more then min (after bonus is applied)
+                    total = total / rate;   //divide by rate because x = ( x / y ) * y (division is the reverse of multiplication
+                }
+                //set the total to the amount we need
+                setWatchedEditText(totalToAdd, totalToAddWatcher, String.format(Locale.US, "%.2f", total));
+                break;
+            case R.id.total_to_add:
+                if (total > min){
+                    total = total * rate;
+                }
+                trips = (total + existing) / fare;
+                //Log.d(TAG, "runCalculation: trips = " + trips);
+                //int tripTotal = (int) trips;
+                setWatchedEditText(numOfTrips, numOfTripsWatcher, String.format(Locale.US, "%.3f", trips));
+                break;
         }
     }
 
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {   //runs every time another number is put in
-            runCalculation(R.id.total_to_add);
+            runCalculation(R.id.num_of_trips);
         }
     };
 
@@ -80,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {   //runs every time another number is put in
-            runCalculation(R.id.num_of_trips);
+            runCalculation(R.id.total_to_add);
         }
     };
 
