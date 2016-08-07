@@ -4,4 +4,5 @@
     <string name="existing_fare">Amount on MetroCard</string>
     <string name="num_of_trips">Total trips desired</string>
     <string name="total_to_add">Amount needed to add</string>
+    <string name="amount_left">Amount remaining: </string>
 </resources>

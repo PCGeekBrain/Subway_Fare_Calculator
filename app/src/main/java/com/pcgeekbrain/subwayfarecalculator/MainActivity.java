@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void runCalculation(int id){
+        //TODO calculate remaining funds and add to bottom of activity
         double existing = getDoubleFromEditText(existingFunds);
         double trips = getDoubleFromEditText(numOfTrips);
         double total = getDoubleFromEditText(totalToAdd);
@@ -53,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
                     total = total * rate;
                 }
                 trips = (total + existing) / fare;
-                //Log.d(TAG, "runCalculation: trips = " + trips);
-                //int tripTotal = (int) trips;
-                setWatchedEditText(numOfTrips, numOfTripsWatcher, String.format(Locale.US, "%.3f", trips));
+                Log.d(TAG, "runCalculation: trips = " + trips);
+                double dispalyTrips = Math.floor(trips);
+                Log.d(TAG, "runCalculation: dispalyTrips = " + dispalyTrips);
+                setWatchedEditText(numOfTrips, numOfTripsWatcher, String.format(Locale.US, "%.0f", dispalyTrips));
                 break;
         }
     }
