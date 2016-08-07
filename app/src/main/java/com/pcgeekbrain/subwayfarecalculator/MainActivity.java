@@ -54,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     total = total * rate;
                 }
                 trips = (total + existing) / fare;
-                Log.d(TAG, "runCalculation: trips = " + trips);
-                double dispalyTrips = Math.floor(trips);
-                Log.d(TAG, "runCalculation: dispalyTrips = " + dispalyTrips);
-                setWatchedEditText(numOfTrips, numOfTripsWatcher, String.format(Locale.US, "%.0f", dispalyTrips));
+                setWatchedEditText(numOfTrips, numOfTripsWatcher, String.format(Locale.US, "%.0f", trips));
                 break;
         }
     }
