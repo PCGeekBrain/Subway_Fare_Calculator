@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             return Double.parseDouble(field.getText().toString());
         } catch (NumberFormatException e){
-            //blank edittext
+            //blank EditText
         } catch (Exception e){
             Log.e(TAG, "getDoubleFromEditText: ", e);
         }
