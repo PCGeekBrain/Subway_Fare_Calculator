@@ -4,7 +4,8 @@
     <string name="existing_fare">Amount on MetroCard</string>
     <string name="num_of_trips">Total trips desired</string>
     <string name="total_to_add">Amount needed to add</string>
-    <string name="amount_left">Amount remaining: </string>
+    <string name="amount_left">Amount remaining:&#160;</string>
+    <string name="amount_left_test">Amount remaining: $%1$.2f</string>
 
     <string name="intro">Welcome to my little subway fare calculator.\n
         Just type the data you wish into the fields below and watch the others fill themselves</string>

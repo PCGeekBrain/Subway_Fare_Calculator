@@ -76,12 +76,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/amount_left"
-        android:id="@+id/textView"
-        android:layout_below="@+id/total_to_add_container"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
+        android:id="@+id/amount_remaining"
         android:textSize="15sp"
         android:textStyle="italic"
-        android:visibility="gone" />
+        android:layout_below="@+id/total_to_add_container"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp" />
 
 </RelativeLayout>
