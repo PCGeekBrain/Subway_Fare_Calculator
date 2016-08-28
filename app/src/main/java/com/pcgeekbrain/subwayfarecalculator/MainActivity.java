@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+//testing git
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText existingFundsView, numOfTripsView, totalToAddView;
