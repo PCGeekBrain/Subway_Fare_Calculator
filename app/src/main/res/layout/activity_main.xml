@@ -83,4 +83,13 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="5dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount_on_card_default"
+        android:id="@+id/amount_on_card"
+        android:layout_below="@+id/amount_remaining"
+        android:layout_centerHorizontal="true"
+        android:textStyle="italic" />
+
 </RelativeLayout>
