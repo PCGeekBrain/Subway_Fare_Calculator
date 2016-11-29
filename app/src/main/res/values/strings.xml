@@ -11,4 +11,10 @@
 
     <string name="intro">Welcome to my little subway fare calculator.\n
         Just type the data you wish into the fields below and watch the others fill themselves</string>
+
+    <string name="icon_card">&#xf09d;</string>
+    <string name="icon_bill">&#xf0d6;</string>
+    <string name="icon_gear">&#xf013;</string>
+    <string name="icon_metro">&#xf239;</string>
+
 </resources>

@@ -8,23 +8,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     tools:context="com.pcgeekbrain.subwayfarecalculator.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/intro"
-        android:id="@+id/introduction_textview"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textStyle="italic"
-        android:gravity="center_horizontal"
-        android:layout_margin="10dp" />
-
     <android.support.design.widget.TextInputLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/existing_funds_container"
-        android:layout_below="@+id/introduction_textview"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp">
 
         <EditText
             android:layout_width="wrap_content"
@@ -59,7 +49,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/total_to_add_container"
         android:layout_below="@+id/num_of_trips_container"
-        android:layout_centerHorizontal="true">
+        android:layout_alignStart="@+id/num_of_trips_container">
 
         <EditText
             android:layout_width="wrap_content"
@@ -75,21 +65,55 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/amount_left"
-        android:id="@+id/amount_remaining"
-        android:textSize="15sp"
-        android:textStyle="italic"
-        android:layout_below="@+id/total_to_add_container"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/amount_on_card_default"
         android:id="@+id/amount_on_card"
         android:layout_below="@+id/amount_remaining"
         android:layout_centerHorizontal="true"
         android:textStyle="italic" />
+
+    <TextView
+        android:text="@string/icon_metro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/total_to_add_container"
+        android:layout_toStartOf="@+id/num_of_trips_container"
+        android:id="@+id/icon_metro"
+        android:layout_below="@+id/icon_MetroCard"
+        android:gravity="center_vertical"
+        android:textSize="24sp"
+        android:layout_marginEnd="5dp" />
+
+    <TextView
+        android:text="@string/icon_bill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/total_to_add_container"
+        android:layout_toStartOf="@+id/total_to_add_container"
+        android:id="@+id/icon_money"
+        android:layout_below="@+id/icon_metro"
+        android:gravity="center_vertical"
+        android:textSize="24sp"
+        android:layout_marginEnd="5dp" />
+
+    <TextView
+        android:text="@string/icon_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/icon_MetroCard"
+        android:gravity="center_vertical"
+        android:textSize="24sp"
+        android:layout_above="@+id/num_of_trips_container"
+        android:layout_alignStart="@+id/icon_metro"
+        android:layout_marginEnd="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/amount_left"
+        android:id="@+id/amount_remaining"
+        android:textSize="15sp"
+        android:textStyle="italic"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

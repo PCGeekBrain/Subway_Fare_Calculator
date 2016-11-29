@@ -1,5 +1,6 @@
 package com.pcgeekbrain.subwayfarecalculator;
 
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,8 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Locale;
-
-//testing git
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         existingFundsView.addTextChangedListener(ExistingFundsWatcher);
         numOfTripsView.addTextChangedListener(numOfTripsWatcher);
         totalToAddView.addTextChangedListener(totalToAddWatcher);
+
+        //set the icon TextViews to fontawesome
+        Typeface fontawesome = Typefaces.get(this, "fonts/fontawesome-webfont.ttf");
+        TextView icon_MetroCard = (TextView)findViewById(R.id.icon_MetroCard);
+        TextView icon_metro = (TextView)findViewById(R.id.icon_metro);
+        TextView icon_money = (TextView)findViewById(R.id.icon_money);
+
+        icon_MetroCard.setTypeface(fontawesome);
+        icon_metro.setTypeface(fontawesome);
+        icon_money.setTypeface(fontawesome);
     }
 
     private void runCalculation(int id){
