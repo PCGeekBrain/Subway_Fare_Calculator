@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private double min = 5.50;
     double remaining_funds = 0;
     double amountOnCard = 0;
+    TextWatcher ExistingFundsWatcher, numOfTripsWatcher, totalToAddWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,94 +34,78 @@ public class MainActivity extends AppCompatActivity {
         totalToAddView = (EditText)findViewById(R.id.total_to_add);
         amountRemainingView = (TextView)findViewById(R.id.amount_remaining);
         amountOnCardView = (TextView)findViewById(R.id.amount_on_card);
-        //assign the listeners
+        //assign the listeners/watchers
+        ExistingFundsWatcher = new MetroTextWatcher(R.id.existing_funds);
+        numOfTripsWatcher = new MetroTextWatcher(R.id.num_of_trips);
+        totalToAddWatcher = new MetroTextWatcher(R.id.total_to_add);
+        //assign them
         existingFundsView.addTextChangedListener(ExistingFundsWatcher);
         numOfTripsView.addTextChangedListener(numOfTripsWatcher);
         totalToAddView.addTextChangedListener(totalToAddWatcher);
 
-        //set the icon TextViews to fontawesome
-        Typeface fontawesome = Typefaces.get(this, "fonts/fontawesome-webfont.ttf");
+        //set the icon TextViews to fontAwesome
+        Typeface fontAwesome = Typefaces.get(this, "fonts/fontawesome-webfont.ttf");
         TextView icon_MetroCard = (TextView)findViewById(R.id.icon_MetroCard);
         TextView icon_metro = (TextView)findViewById(R.id.icon_metro);
         TextView icon_money = (TextView)findViewById(R.id.icon_money);
 
-        icon_MetroCard.setTypeface(fontawesome);
-        icon_metro.setTypeface(fontawesome);
-        icon_money.setTypeface(fontawesome);
+        icon_MetroCard.setTypeface(fontAwesome);
+        icon_metro.setTypeface(fontAwesome);
+        icon_money.setTypeface(fontAwesome);
     }
-
     private void runCalculation(int id){
-        //TODO calculate remaining funds and add to bottom of activity
         double existing = getDoubleFromEditText(existingFundsView);
         double trips = getDoubleFromEditText(numOfTripsView);
-        double total = getDoubleFromEditText(totalToAddView);
-        int total_trips;
+        double total_adding = getDoubleFromEditText(totalToAddView);
 
-        switch (id){
-            case R.id.existing_funds:
-            case R.id.num_of_trips:
-                //totalToAddView = num of trips multiplied by the fare. then for good measure remove existing funds
-                total = (trips * fare) - existing;
-                if (total > min * rate){    //if we qualify for the discount (are adding more then min (after bonus is applied)
-                    total = total / rate;   //divide by rate because x = ( x / y ) * y (division is the reverse of multiplication
-                }
-                //set the total to the amount we need
-                setWatchedEditText(totalToAddView, totalToAddWatcher, String.format(Locale.US, "%.2f", total));
-                break;
-            case R.id.total_to_add:
-                //add bonus if over min
-                if (total > min){
-                    total = total * rate;
-                }
-                trips = (total + existing) / fare;              //trips available is the amount of times you have the fare on the card
-                total_trips = (int)trips;                       //round that down to avoid rounding up errors (e.g. $5 = 2 trips)
-
-                //set text fields
-                setWatchedEditText(numOfTripsView, numOfTripsWatcher, String.format(Locale.US, "%d", total_trips));
-                break;
+        if (id == R.id.existing_funds) {
+            if (total_adding == 0 || amountOnCard - existing < 0) {//if user has not entered an amount they wish to add. count up the number of rides
+                double on_card = existing; // making names clear
+                int total_rides = (int) Math.floor(on_card / fare); //total rides is equal to the amount on card divided by the fare. rounded down (so 2.45 rides is just 2)
+                setWatchedEditText(numOfTripsView, numOfTripsWatcher, String.format(Locale.US, "%d", total_rides)); //Set number of rides
+                setWatchedEditText(totalToAddView, totalToAddWatcher, String.format(Locale.US, "%.2f", 0.00));  //set the amount we need to add down
+                remaining_funds = on_card - (fare * total_rides); //amount left is equal to the amount on the card minus the number of rides multiplied by the fare
+                amountRemainingView.setText(getString(R.string.amount_left_test, remaining_funds)); //set $ Extra
+                amountOnCard = on_card;     //set amount on card (ser entered. but making things look nice
+            } else {    //amountOnCard - existing < 0
+                total_adding = (trips * fare) - existing; //total needed to add is what is needed minus what we have
+                if (total_adding > min) {total_adding /= rate;} //If we still qualify for the bonus apply it
+                setWatchedEditText(totalToAddView, totalToAddWatcher, String.format(Locale.US, "%.2f", total_adding));  //set the amount we need to add down
+                amountRemainingView.setText(getString(R.string.amount_left_test, 0.00)); //set $ Extra
+                amountOnCard = trips*fare;
+            }
+        } else if (id == R.id.num_of_trips) {
+            //TODO get rid of this code duplication. does same as else above.
+            total_adding = (trips * fare) - existing; //total needed to add is what is needed minus what we have
+            if (total_adding > min) {total_adding /= rate;} //If we still qualify for the bonus apply it
+            setWatchedEditText(totalToAddView, totalToAddWatcher, String.format(Locale.US, "%.2f", Math.ceil(total_adding*100)/100));  //set the amount we need to add down
+            amountRemainingView.setText(getString(R.string.amount_left_test, 0.00)); //set $ Extra
+            amountOnCard = trips*fare;
+        } else if (id == R.id.total_to_add) {
+            double on_card = total_adding;
+            if (on_card > min) {on_card *= rate;} //If we still qualify for the bonus apply it (in this case add it)
+            on_card += existing;   //add the amount we have already
+            int total_rides = (int) Math.floor(on_card / fare);    //get the amount of rides we have
+            setWatchedEditText(numOfTripsView, numOfTripsWatcher, String.format(Locale.US, "%d", total_rides)); //Set number of rides
+            remaining_funds = on_card - (fare * total_rides); //amount left is equal to the amount on the card minus the number of rides multiplied by the fare
+            amountRemainingView.setText(getString(R.string.amount_left_test, remaining_funds)); //set $ Extra
+            amountOnCard = on_card;
         }
-        //after fields are set: get amount that will be on card when transaction is done and what will be left
-        remaining_funds = (trips - (int)trips) * fare;  //get whatever is left (remainder of trips times fare. Since trips is the total divided by fare this should work.
-        amountOnCard = trips * fare + remaining_funds;
-
-        amountRemainingView.setText(getString(R.string.amount_left_test, remaining_funds));
         amountOnCardView.setText(getString(R.string.amount_on_card, amountOnCard));
-
     }
-
-    private TextWatcher ExistingFundsWatcher = new TextWatcher() {
+    private class MetroTextWatcher implements TextWatcher {
+        int id;
+        MetroTextWatcher(int id){
+            this.id = id;
+        }
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
         public void afterTextChanged(Editable editable) {}
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {   //runs every time another number is put in
-            runCalculation(R.id.existing_funds);
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            Log.d(TAG, "onTextChanged: Ran on ID" + id);
+            runCalculation(id);
         }
-    };
-
-    private TextWatcher numOfTripsWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-        public void afterTextChanged(Editable editable) {}
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {   //runs every time another number is put in
-            runCalculation(R.id.num_of_trips);
-        }
-    };
-
-    private TextWatcher totalToAddWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-        public void afterTextChanged(Editable editable) {}
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {   //runs every time another number is put in
-            runCalculation(R.id.total_to_add);
-        }
-    };
-
+    }
     private double getDoubleFromEditText(EditText field){
         try {
             return Double.parseDouble(field.getText().toString());
@@ -131,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return 0;
     }
-
     private void setWatchedEditText(EditText view, TextWatcher watcher, String text){
         view.removeTextChangedListener(watcher);
         view.setText(text);
